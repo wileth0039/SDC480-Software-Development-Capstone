@@ -1,0 +1,17 @@
+@model IsItConvergent.Models.ViewModels.LinuxApp_VM
+<div class="col col-xs-12 col-sm-6 col-md-4 col-lg-3 mb-4" id="card_@Model.IIC_ID" data-value="@Model.Name">
+    <div class="card h-100 d-flex flex-column align-items-between shadow-sm">
+        <a asp-controller="Home" asp-action="ProductPage" asp-route-id="@Model.IIC_ID"
+            class="text-decoration-none text-reset h-100 d-flex flex-column">
+            <img src="@Model.IconUrl" class="card-img-top" alt="@Model.Name icon"
+                style="object-fit:contain; max-height:140px;">
+            <div class="card-body flex-grow-1 d-flex flex-column">
+                <h5 class="card-title">@Model.Description</h5>
+            </div>
+            <div class="card-footer mt-auto text-center">
+                <div class="fw-bold">@Model.Name</div>
+                <div class="text-muted">Version: @Model.Version</div>
+            </div>
+        </a>
+    </div>
+</div>

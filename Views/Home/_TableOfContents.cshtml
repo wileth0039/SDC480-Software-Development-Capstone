@@ -1,0 +1,33 @@
+@model IsItConvergent.Models.ViewModels.HomePage_VM
+<div class="card h-100 w-100 shadow mb-3">
+    <div class="card-header">
+        Table of Contents
+    </div>
+    <div class="card-body">
+        @if (Model.AccessLevel == 0)
+        {
+            <div class="alert alert-info" role="alert">
+                Sign in to add new apps or ratings.
+            </div>
+        }
+        else
+        {
+            <!-- Modal Trigger Button -->
+            <button type="button" class="btn btn-success mb-3 w-100" data-bs-toggle="modal"
+                data-bs-target="#addNewAppModal">
+                <i class="bi bi-plus-lg"></i> Add New App
+            </button>
+        }
+
+
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="search-label">
+                <i class="bi bi-search"></i>
+            </span>
+            <input type="text" class="form-control" id="appSearch" placeholder="Search apps..." aria-label="Search apps"
+                aria-describedby="search-label" autocomplete="off" />
+        </div>
+    </div>
+
+</div>

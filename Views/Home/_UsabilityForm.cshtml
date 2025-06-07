@@ -1,0 +1,40 @@
+@model IsItConvergent.Models.ViewModels.AppUsabilityRating_VM
+<div class="card mb-1">
+    <div class="card-header">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-auto d-flex align-items-center">
+                <h6 class="mb-0 me-2">@Model.FormFactorTypeDescrip</h6>
+                <sup class="text-nowrap">
+                    (@Model.DateModified.Value.ToString("yyyy-MM-dd"))
+                </sup>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-sm btn-success" data-custom-formSubmit="UserRatingSubmit"
+                    data-custom-formfactor="@Model.FormFactorTypeId">Submit</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-1">
+        <div class="d-flex justify-content-center align-items-end">
+            @foreach (var grade in Model.GradeOptions)
+            {
+                var radioId = $"type_{Model.FormFactorTypeId}_grade_{grade.Grade}";
+                bool selected = grade.Grade == Model.UsabilityScore;
+                var id = $"formfactorgrade_{Model.FormFactorTypeId}_{grade.Grade}";
+                <div class="d-flex flex-column align-items-center mx-2" title="@grade.FullDescrip">
+                    <label class="form-check-label mb-1" for="@id">@grade.ShortDescrip</label>
+                    <input class="form-check-input" type="radio" name="GradeOptions_@Model.FormFactorTypeId"
+                        data-custom-formfactor="@Model.FormFactorTypeId" id="@radioId" value="@grade.Grade" @(selected ?
+                                                                                                                                "checked" : "")>
+            </div>
+                        }
+        </div>
+        <div class="form-group mt-3" title="@Model.Comments">
+            <label for="Comments">Comments:</label>
+            @Html.TextBoxFor(x => x.Comments, new { @class = "form-control", placeholder = "Comments",
+            @id = "Comments_" + Model.FormFactorTypeId, data_custom_formfactor = Model.FormFactorTypeId })
+        </div>
+
+
+    </div>
+</div>

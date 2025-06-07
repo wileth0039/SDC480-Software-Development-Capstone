@@ -1,0 +1,27 @@
+﻿@model IsItConvergent.Models.ViewModels.HomePage_VM
+
+<partial name="_AddAppForm" model="Model.NewAppForm" />
+<div class="row">
+    @* Table of Contents *@
+    <div class="col-2">
+        <partial name="_TableOfContents" model="Model" />
+    </div>
+
+    @* Main Content *@
+    <div class="col-10">
+        <div class="row d-flex justify-content-start">
+            @if (Model.LinuxApps.Count == 0)
+            {
+                <div class="col-12">
+                    <div class="alert alert-info" role="alert">
+                        No Linux apps found. Please add some to get started!
+                    </div>
+                </div>
+            }
+            @foreach (var app in Model.LinuxApps)
+            {
+                <partial name="_LinuxAppCard" model="app" />
+            }
+        </div>
+    </div>
+</div>

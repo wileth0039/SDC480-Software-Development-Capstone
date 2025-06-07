@@ -1,0 +1,130 @@
+@model IsItConvergent.Models.ViewModels.LinuxApp_VM
+
+@* Hidden form for submitting a User Rating *@
+@using (Html.BeginForm("SubmitUserRating", "Home", FormMethod.Post, new { @id = "UserRatingSubmit" }))
+{
+    <input type="hidden" id="UR_AppId" name="UR_AppId" value="@Model.IIC_ID" />
+    <input type="hidden" id="UR_FormFactorTypeId" name="UR_FormFactorTypeId" />
+    <input type="hidden" id="UR_GradeOption" name="UR_GradeOption" />
+    <input type="hidden" id="UR_Comments" name="UR_Comments" value="" />
+}
+
+<div class="row align-items-stretch">
+    <div class="col-12 col-lg-3">
+        @* General Info *@
+        <div class="card shadow mb-3 p-3">
+            <div class="card-body">
+                <h1>@Model.Name</h1>
+                <img src="@Model.IconUrl" alt="@Model.Name icon" class="img-fluid mb-3"
+                    style="max-height: 200px; object-fit: contain;">
+                <h5>@Model.Description</h5>
+                <p><strong>Version:</strong> @Model.Version</p>
+            </div>
+
+        </div>
+    </div>
+
+    @* Community Ratings *@
+    <div class="col-12 col-lg-5 h-100 d-flex flex-column">
+        <div class="card shadow mb-3 overflow-hidden h-100 d-flex flex-column">
+            <div class="card-header">
+                <h5>Community Ratings</h5>
+            </div>
+            <div class="card-body flex-grow-1" style="overflow-y: auto; max-height: 80vh;">
+                @foreach (var formFactor in Model.CommunityRatings)
+                {
+                    <div class="card mb-2">
+                        <div class="card-header">
+                            <h6>@formFactor.FormFactorTypeName</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <p><strong>Average Rating: </strong> @formFactor.AverageRating (@formFactor.TotalRatings
+                                    Reviews)</p>
+                            </div>
+                            <div class="row">
+                                Latest Reviews:
+                                @foreach (var review in formFactor.UserRatings)
+                                {
+                                    <div class="card mb-1">
+                                        <div class="card-body">
+                                            <div>
+                                                <strong>@review.UserName:</strong>
+                                                (@(review.DateModified.HasValue ?
+                                                                                    review.DateModified.Value.ToString("MM/dd/yyyy") : "N/A"))
+                                    </div>
+                                    <div>
+                                        @review.UsabilityScore/5
+                                        @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    if (i <= review.UsabilityScore)
+                                                    {
+                                                        @:<span style="color:gold;">&#9733;</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @:<span style="color:lightgray;">&#9734;</span>
+                                                    }
+                                                }
+                                            </div>
+                                            <div>@review.Comments</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    @* Your Ratings *@
+    <div class="col-12 col-lg-4">
+        <div class="card shadow mb-3">
+            <div class="card-header">
+                <h5>Your Ratings</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.AccessLevel == 0)
+                {
+                    <div class="alert alert-info" role="alert">
+                        Sign in to add new apps or ratings.
+                    </div>
+                }
+                else
+                {
+                    @foreach (var formFactor in Model.YourRatings)
+                    {
+                        <partial name="_UsabilityForm" model="formFactor" />
+                    }
+
+                }
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@* 
+    What do we want on this page?
+    General Info:
+    - Icon
+    - Name
+    - Description
+    - Version
+
+    Community Ratings:
+    - AVG Rating (for all versions used in last 90 days)
+    - Community Ratings (per category, overall, all versions and latest versions)
+
+    Your Ratings:
+    - Desktop Rating
+    - HTPC/Gaming Handheld rating
+    - Tablet rating
+    - Mobile Phone rating
+
+
+    
+     *@
